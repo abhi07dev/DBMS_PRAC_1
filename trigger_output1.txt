@@ -1,0 +1,141 @@
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Sun Sep 28 15:31:55 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Sun Sep 28 2025 15:30:05 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table library(b_id varchar(20),b_name varchar(20),a_name varchar(20),price float);
+
+Table created.
+
+SQL> desc library;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ B_ID                                               VARCHAR2(20)
+ B_NAME                                             VARCHAR2(20)
+ A_NAME                                             VARCHAR2(20)
+ PRICE                                              FLOAT(126)
+
+SQL> create table backlib as select * from libaray;
+create table backlib as select * from libaray
+                                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create table backlib as select * from library;
+
+Table created.
+
+SQL> desc backlib;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ B_ID                                               VARCHAR2(20)
+ B_NAME                                             VARCHAR2(20)
+ A_NAME                                             VARCHAR2(20)
+ PRICE                                              FLOAT(126)
+
+SQL> insert into library values(101,'teleCOM','jai',590);
+
+1 row created.
+
+SQL> insert into library values(102,'cyberLIGHT','prasad',298);
+
+1 row created.
+
+SQL> insert into library values(103,'qubit','vivek',838);
+
+1 row created.
+
+SQL> insert into library values(104,'nonbots','vaibhav',1002);
+
+1 row created.
+
+SQL> insert into library values(105,'topology','atharv',776);
+
+1 row created.
+
+SQL> select * from library;
+
+B_ID                 B_NAME               A_NAME                    PRICE
+-------------------- -------------------- -------------------- ----------
+101                  teleCOM              jai                         590
+102                  cyberLIGHT           prasad                      298
+103                  qubit                vivek                       838
+104                  nonbots              vaibhav                    1002
+105                  topology             atharv                      776
+
+SQL> select * from backlib;
+
+no rows selected
+
+SQL> delete from library where b_id = '103';
+
+1 row deleted.
+
+SQL> select * from backlib;
+
+no rows selected
+
+SQL> select * from library;
+
+B_ID                 B_NAME               A_NAME                    PRICE
+-------------------- -------------------- -------------------- ----------
+101                  teleCOM              jai                         590
+102                  cyberLIGHT           prasad                      298
+104                  nonbots              vaibhav                    1002
+105                  topology             atharv                      776
+
+SQL> select * from backlib;
+
+no rows selected
+
+SQL> desc backlib;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ B_ID                                               VARCHAR2(20)
+ B_NAME                                             VARCHAR2(20)
+ A_NAME                                             VARCHAR2(20)
+ PRICE                                              FLOAT(126)
+
+SQL> @C:\Users\abhij\OneDrive\Documents\GitHub\DBMS_PRAC_1\trig.sql
+
+Warning: Trigger created with compilation errors.
+
+SQL> @C:\Users\abhij\OneDrive\Documents\GitHub\DBMS_PRAC_1\trig.sql
+
+Warning: Trigger created with compilation errors.
+
+SQL> @C:\Users\abhij\OneDrive\Documents\GitHub\DBMS_PRAC_1\trig.sql
+before update or delete on library1
+                           *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
+
+SQL> @C:\Users\abhij\OneDrive\Documents\GitHub\DBMS_PRAC_1\trig.sql
+before update or delete on library1
+                           *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
+
+SQL> @C:\Users\abhij\OneDrive\Documents\GitHub\DBMS_PRAC_1\trig.sql
+
+Trigger created.
+
+SQL>
