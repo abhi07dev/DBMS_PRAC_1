@@ -1,0 +1,172 @@
+Please enter a MongoDB connection string (Default: mongodb://localhost/):
+
+Current Mongosh Log ID: 68df9bebffdfb739eacebea3
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+Using MongoDB:          8.2.0
+Using Mongosh:          2.5.8
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-09-29T15:16:41.231+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> show dbs;
+admin      40.00 KiB
+company   212.00 KiB
+config     72.00 KiB
+cricket   176.00 KiB
+demmo       8.00 KiB
+employee   72.00 KiB
+f_mong     72.00 KiB
+local      64.00 KiB
+school     24.00 KiB
+test> use demo;
+switched to db demo
+demo> show dbs;
+admin      40.00 KiB
+company   212.00 KiB
+config     96.00 KiB
+cricket   176.00 KiB
+demmo       8.00 KiB
+employee   72.00 KiB
+f_mong     72.00 KiB
+local      64.00 KiB
+school     24.00 KiB
+demo> db.createCollection(stud);
+ReferenceError: stud is not defined
+demo> db.createCollection('stud');
+{ ok: 1 }
+demo> show db;
+MongoshInvalidInputError: [COMMON-10001] 'db' is not a valid argument for "show".
+demo> show dbs;
+admin      40.00 KiB
+company   212.00 KiB
+config     96.00 KiB
+cricket   176.00 KiB
+demmo       8.00 KiB
+demo        8.00 KiB
+employee   72.00 KiB
+f_mong     72.00 KiB
+local      64.00 KiB
+school     24.00 KiB
+demo> db.stud.insertMany([{rollno:102,name:'rahul',class:'TE',fees:20000}]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68df9f23ffdfb739eacebea4') }
+}
+demo> db.stud.insertMany([{rollno:101,name:'jay',class:'TE',fees:10000},]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68df9f64ffdfb739eacebea5') }
+}
+demo> db.stud.insertMany([{rollno:103,name:'vaibhav',class:'TE',fees:11200},{rollno:104,name:'tushar',class:'FE',fees:7400}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68df9febffdfb739eacebea6'),
+    '1': ObjectId('68df9febffdfb739eacebea7')
+  }
+}
+demo> db.stud.find({name:'jay'});
+[
+  {
+    _id: ObjectId('68df9f64ffdfb739eacebea5'),
+    rollno: 101,
+    name: 'jay',
+    class: 'TE',
+    fees: 10000
+  }
+]
+demo> db.stud.find({name:'rahul'});
+[
+  {
+    _id: ObjectId('68df9f23ffdfb739eacebea4'),
+    rollno: 102,
+    name: 'rahul',
+    class: 'TE',
+    fees: 20000
+  }
+]
+demo> db.stud.find({name:'vaibhav'});
+[
+  {
+    _id: ObjectId('68df9febffdfb739eacebea6'),
+    rollno: 103,
+    name: 'vaibhav',
+    class: 'TE',
+    fees: 11200
+  }
+]
+demo> db.stud.update({_id:103},{$set:{fees:1000450}});
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+demo> db.stud.updateMany({_id:103},{$set:{fees:1000450}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+demo> db.stud.updateOne({_id:103},{$set:{fees:1000450}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+demo> db.stud.find({name:'vaibhav'});
+[
+  {
+    _id: ObjectId('68df9febffdfb739eacebea6'),
+    rollno: 103,
+    name: 'vaibhav',
+    class: 'TE',
+    fees: 11200
+  }
+]
+demo> db.stud.updateOne({rollno:103},{$set:{fees:1000450}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+demo> db.stud.find({name:'vaibhav'});
+[
+  {
+    _id: ObjectId('68df9febffdfb739eacebea6'),
+    rollno: 103,
+    name: 'vaibhav',
+    class: 'TE',
+    fees: 1000450
+  }
+]
+demo> db.stud.remove({rollno:104});
+DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+demo> db.stud.find({name:'tushar'});
+
+demo> db.stud.find({name:'vaibhav'});
+[
+  {
+    _id: ObjectId('68df9febffdfb739eacebea6'),
+    rollno: 103,
+    name: 'vaibhav',
+    class: 'TE',
+    fees: 1000450
+  }
+]
+demo> db.stud.find({rollno:104});
+
+demo>
