@@ -1,0 +1,269 @@
+Microsoft Windows [Version 10.0.26100.6725]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MongoDB\Server\8.2\bin>mongosh
+Current Mongosh Log ID: 68f3c3710bda8759d1cebea3
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.8
+Using MongoDB:          8.2.1
+Using Mongosh:          2.5.8
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-10-18T22:03:15.701+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> use db;
+switched to db db
+db> use demo;
+switched to db demo
+demo> db.createCollection('fees');
+{ ok: 1 }
+demo> db.fees.insert([{rollno:101,name:'rahul',class:'T.E',fees:72000}]);
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68f3c3fb0bda8759d1cebea4') }
+}
+demo> db.fees.insert([{rollno:102,name:'Jai',class:'S.E',fees:32000}]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68f3c41a0bda8759d1cebea5') }
+}
+demo> db.fees.insert([{rollno:102,name'kishor',class:'F.E',fees:56000}]);
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:32)
+
+> 1 | db.fees.insert([{rollno:102,name'kishor',class:'F.E',fees:56000}]);
+    |                                 ^
+  2 |
+
+demo> db.fees.insert([{rollno:102,name:'kishor',class:'F.E',fees:56000}]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68f3c43d0bda8759d1cebea6') }
+}
+demo> deb.fees.find();
+ReferenceError: deb is not defined
+demo> db.fees.find();
+[
+  {
+    _id: ObjectId('68f3c3fb0bda8759d1cebea4'),
+    rollno: 101,
+    name: 'rahul',
+    class: 'T.E',
+    fees: 72000
+  },
+  {
+    _id: ObjectId('68f3c41a0bda8759d1cebea5'),
+    rollno: 102,
+    name: 'Jai',
+    class: 'S.E',
+    fees: 32000
+  },
+  {
+    _id: ObjectId('68f3c43d0bda8759d1cebea6'),
+    rollno: 102,
+    name: 'kishor',
+    class: 'F.E',
+    fees: 56000
+  }
+]
+demo> db.fees.count();
+DeprecationWarning: Collection.count() is deprecated. Use countDocuments or estimatedDocumentCount.
+3
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$sum:'$fees'}}}])
+[
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'S.E', total_amount: 32000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$min:'$fees'}}}])
+[
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'F.E', total_amount: 56000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$max:'$fees'}}}])
+[
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'S.E', total_amount: 32000 }
+]
+demo> db.fees.insert([{rollno:104,name'dinesh',class:'T.E',fees:86000}]);
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:32)
+
+> 1 | db.fees.insert([{rollno:104,name'dinesh',class:'T.E',fees:86000}]);
+    |                                 ^
+  2 |
+
+demo> db.fees.insert([{rollno:104,name:'dinesh',class:'T.E',fees:86000}]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68f3c5820bda8759d1cebea7') }
+}
+demo> db.fees.insert([{rollno:104,name:'vaibhav',class:'B.E',fees:93000}]);
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68f3c5990bda8759d1cebea8') }
+}
+
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$sum:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: 93000 },
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 158000 },
+  { _id: 'S.E', total_amount: 32000 }
+]
+
+demo> db.fees.updateOne({name:'kishor'},{$set:{rollno:'103'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+demo> db.fees.find();
+[
+  {
+    _id: ObjectId('68f3c3fb0bda8759d1cebea4'),
+    rollno: 101,
+    name: 'rahul',
+    class: 'T.E',
+    fees: 72000
+  },
+  {
+    _id: ObjectId('68f3c41a0bda8759d1cebea5'),
+    rollno: 102,
+    name: 'Jai',
+    class: 'S.E',
+    fees: 32000
+  },
+  {
+    _id: ObjectId('68f3c43d0bda8759d1cebea6'),
+    rollno: '103',
+    name: 'kishor',
+    class: 'F.E',
+    fees: 56000
+  },
+  {
+    _id: ObjectId('68f3c5820bda8759d1cebea7'),
+    rollno: 104,
+    name: 'dinesh',
+    class: 'T.E',
+    fees: 86000
+  },
+  {
+    _id: ObjectId('68f3c5990bda8759d1cebea8'),
+    rollno: '105',
+    name: 'vaibhav',
+    class: 'B.E',
+    fees: 93000
+  }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$sum:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: 93000 },
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 158000 },
+  { _id: 'S.E', total_amount: 32000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$min:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: 93000 },
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'F.E', total_amount: 56000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$max:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: 93000 },
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 86000 },
+  { _id: 'S.E', total_amount: 32000 }
+]
+demo> db.fees.insertOne({Rollno:106,Name:'Tanmay',Class:'TE',Amount:45000,pdate:'13-07-2025'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68f3c7730bda8759d1cebea9')
+}
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$push:'$fees'}}}])
+[
+  { _id: null, total_amount: [] },
+  { _id: 'F.E', total_amount: [ 56000 ] },
+  { _id: 'T.E', total_amount: [ 72000, 86000 ] },
+  { _id: 'S.E', total_amount: [ 32000 ] },
+  { _id: 'B.E', total_amount: [ 93000 ] }
+]
+demo> db.fees.insertOne({rollno:106,Name:'Tanmay',Class:'TE',Amount:45000,pdate:'13-07-2025'})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68f3c7d00bda8759d1cebeaa')
+}
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$push:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: [ 93000 ] },
+  { _id: 'S.E', total_amount: [ 32000 ] },
+  { _id: 'T.E', total_amount: [ 72000, 86000 ] },
+  { _id: 'F.E', total_amount: [ 56000 ] },
+  { _id: null, total_amount: [] }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$addToSet:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: [ 93000 ] },
+  { _id: 'F.E', total_amount: [ 56000 ] },
+  { _id: 'T.E', total_amount: [ 72000, 86000 ] },
+  { _id: 'S.E', total_amount: [ 32000 ] },
+  { _id: null, total_amount: [] }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$min:'$fees'}}}])
+[
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: null, total_amount: null },
+  { _id: 'B.E', total_amount: 93000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$max:'$fees'}}}])
+[
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: 'T.E', total_amount: 86000 },
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: null, total_amount: null },
+  { _id: 'B.E', total_amount: 93000 }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$first:'$fees'}}}])
+[
+  { _id: 'B.E', total_amount: 93000 },
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: 'T.E', total_amount: 72000 },
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: null, total_amount: null }
+]
+demo> db.fees.aggregate([{$group:{_id:'$class',total_amount:{$last:'$fees'}}}])
+[
+  { _id: 'F.E', total_amount: 56000 },
+  { _id: 'T.E', total_amount: 86000 },
+  { _id: 'S.E', total_amount: 32000 },
+  { _id: null, total_amount: null },
+  { _id: 'B.E', total_amount: 93000 }
+]
+demo> db.fees.createIndex({rollno:1},{class:1})
+rollno_1
+demo> db.fees.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_1' }
+]
+demo> db.fees.createIndex({class:1},{spare:'true'})
+class_1
+demo> db.fees.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { rollno: 1 }, name: 'rollno_1' },
+  { v: 2, key: { class: 1 }, name: 'class_1' }
+]
+demo>
